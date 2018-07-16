@@ -1,0 +1,116 @@
+<h6 mat-dialog-title>Product Details</h6>
+<mat-divider></mat-divider>
+<mat-dialog-content>
+  <form>
+    <div class="row">
+      <div class="col-6">
+        <mat-form-field class="w-100">
+          <input matInput placeholder="Title" name="title" [(ngModel)]="product.title">
+        </mat-form-field>
+        <app-ngx-editor class="w-100" [config]="editorConfig" name="description" [(ngModel)]="product.description"></app-ngx-editor>
+        <mat-divider></mat-divider>
+        <!-- <mat-form-field class="w-100">
+          <textarea matInput matTextareaAutosize placeholder="Description" rows="6" name="description" [(ngModel)]="product.description"></textarea>
+        </mat-form-field> -->
+        <mat-form-field class="w-100">
+          <input matInput placeholder="Price" name="price" [(ngModel)]="product.price">
+          <span matPrefix>$&nbsp;</span>
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <input matInput placeholder="SKU (Stock Keeping Unit)" name="sku" [(ngModel)]="product.sku">
+        </mat-form-field>
+        <mat-form-field class="w-100">
+          <input matInput placeholder="Barcode" name="barcode" [(ngModel)]="product.barcode">
+        </mat-form-field>
+      </div>
+      <div class="col-6">
+        <app-upload class="w-100" [key]="product.imageId" (complete)="imageUploadComplete($event)"></app-upload>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="d-inline-block">Options ({{ options ? options.length : 0 }})</h5>
+            <button mat-raised-button class="float-right" (click)="newOption()">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="card-body">
+            <mat-list role="list">
+              <mat-list-item role="listitem" *ngFor="let option of options">
+                {{ option.name }} :
+                <span *ngFor="let value of option.values" class="badge badge-info">{{ value.value }}</span>
+                <button class="btn btn-link ml-auto" (click)="editOption(option)">
+                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn-link" (click)="deleteOption(option)">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="card mt-2">
+          <div class="card-header">
+            <h5 class="d-inline-block">Variants ({{ generatedVariants ? generatedVariants.length : 0 }})</h5>
+            <button mat-raised-button class="float-right" (click)="generateProductVariants()">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="card-body">
+            <mat-table #table [dataSource]="variantsDataSource">
+              <ng-container matColumnDef="variant">
+                <mat-header-cell *matHeaderCellDef> Variant </mat-header-cell>
+                <mat-cell *matCellDef="let variant">
+                  <span *ngFor="let value of variant.values" class="badge badge-info">{{ value.value.value }}</span>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="price">
+                <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
+                <mat-cell *matCellDef="let variant; let i = index;">
+                  <mat-form-field class="w-100">
+                    <input [id]="'variant' + i" [disabled]="!variant.active" matInput name="price" [value]="variant.price" (change)="variantPropertyChanged($event, variant)">
+                    <span matPrefix>$&nbsp;</span>
+                  </mat-form-field>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="sku">
+                <mat-header-cell *matHeaderCellDef> SKU </mat-header-cell>
+                <mat-cell *matCellDef="let variant; let i = index;">
+                  <mat-form-field class="w-100">
+                    <input [id]="'sku' + i" [disabled]="!variant.active" matInput name="sku" [value]="variant.sku" (change)="variantPropertyChanged($event, variant)">
+                  </mat-form-field>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="barcode">
+                <mat-header-cell *matHeaderCellDef> Barcode </mat-header-cell>
+                <mat-cell *matCellDef="let variant; let i = index;">
+                  <mat-form-field class="w-100">
+                    <input [id]="'barcode' + i" [disabled]="!variant.active" matInput name="barcode" [value]="variant.barcode" (change)="variantPropertyChanged($event, variant)">
+                  </mat-form-field>
+                </mat-cell>
+              </ng-container>
+              <ng-container matColumnDef="active">
+                <mat-header-cell *matHeaderCellDef>
+                  <mat-checkbox color="primary" name="selectAllVariants" [(ngModel)]="selectAllVariants" (change)="selectDeselectAllVariants($event)"></mat-checkbox>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let variant">
+                  <mat-checkbox color="primary" name="active" [checked]="variant.active" (change)="variantActiveChanged($event, variant)"></mat-checkbox>
+                </mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions>
+  <button mat-raised-button (click)="saveAndClose()">Save</button>
+  <button mat-raised-button (click)="cancel()">Cancel</button>
+</mat-dialog-actions>

@@ -1,0 +1,14 @@
+<ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+    <a class="nav-link" routerLink="/">
+      <i class="fa fa-fw fa-dashboard"></i>
+      <span class="nav-link-text">Dashboard</span>
+    </a>
+  </li>
+  <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Products" *ngIf="this.accountSvc.isLoggedIn && this.accountSvc.isAdmin">
+    <a class="nav-link" routerLink="/product">
+      <i class="fa fa-fw fa-th"></i>
+      <span class="nav-link-text">Products</span>
+    </a>
+  </li>
+</ul>

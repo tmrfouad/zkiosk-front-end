@@ -1,0 +1,24 @@
+<h6 mat-dialog-title>Option Details</h6>
+<mat-divider></mat-divider>
+<mat-dialog-content>
+  <form>
+    <mat-form-field class="w-100">
+      <input matInput placeholder="Name" name="name" [(ngModel)]="option.name">
+    </mat-form-field>
+    <mat-form-field class="demo-chip-list w-100">
+      <mat-chip-list #chipList>
+        <mat-chip *ngFor="let value of option.values" [selectable]="selectable" [removable]="removable" (remove)="removeValue(value)">
+          {{ value.value }}
+          <i matChipRemove class="fa fa-times-circle" aria-hidden="true" *ngIf="removable"></i>
+        </mat-chip>
+        <input placeholder="Values" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+          (matChipInputTokenEnd)="addValue($event)" />
+      </mat-chip-list>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions>
+  <button mat-raised-button (click)="save()">Save</button>
+  <button mat-raised-button (click)="cancel()">Cancel</button>
+</mat-dialog-actions>

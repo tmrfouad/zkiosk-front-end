@@ -1,0 +1,6 @@
+<button id="uploadButton" mat-button color="primary" (click)="onClick()"
+    [style.backgroundImage]="'url(' + imgSrc + ')'">
+    <i *ngIf="!key" class="fa fa-plus fa-2x" aria-hidden="true"></i>
+    <i *ngIf="key" class="fa fa-pencil fa-2x" aria-hidden="true"></i>
+</button>
+<input type="file" id="fileUpload" name="fileUpload" accept="{{accept}}" style="display:none;"/>

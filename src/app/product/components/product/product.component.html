@@ -1,0 +1,70 @@
+<div class="card mb-3">
+  <div class="card-header">
+    <form class="my-2 my-lg-0 ml-lg-1 d-inline-block w-50">
+      <div class="input-group">
+        <span class="input-group-prepend">
+          <button class="btn btn-primary" type="button">
+            <i class="fa fa-search"></i>
+          </button>
+        </span>
+        <input class="form-control" type="text" placeholder="Search products..." name="searchFilter" [(ngModel)]="searchFilter" (keyup)="searchProducts()">
+      </div>
+    </form>
+    <button mat-raised-button class="btn btn-primary m-1 float-right" type="button" (click)="newProduct()">
+      <i class="fa fa-plus"></i>
+    </button>
+    <button mat-raised-button class="btn btn-primary m-1 float-right" type="button" (click)="refreshProducts()">
+      <i class="fa fa-refresh"></i>
+    </button>
+  </div>
+  <div class="card-body">
+    <div class="example-container mat-elevation-z8">
+      <mat-table #table [dataSource]="productDataSource" matSort>
+        <ng-container matColumnDef="image">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Image </mat-header-cell>
+          <mat-cell *matCellDef="let product">
+            <div class="product-img"
+              style.backgroundImage="url({{ product.imageId ? apiUrl + '/uploads/' + product.imageId :  apiUrl + '/images/no-image.jpg' }})">
+            </div>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="title">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Title </mat-header-cell>
+          <mat-cell *matCellDef="let product"> {{product.title}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="price">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Price </mat-header-cell>
+          <mat-cell *matCellDef="let product"> {{product.price}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="sku">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> SKU </mat-header-cell>
+          <mat-cell *matCellDef="let product"> {{product.sku}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="barcode">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Barcode </mat-header-cell>
+          <mat-cell *matCellDef="let product"> {{product.barcode}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="variantCount">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Variants </mat-header-cell>
+          <mat-cell *matCellDef="let product"> {{product.variants ? product.variants.length : 0}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+          <mat-cell *matCellDef="let product">
+            <button class="btn btn-link" (click)="editProduct(product)">
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-link" (click)="deleteProduct(product)">
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true">
+      </mat-paginator>
+    </div>
+  </div>
+  <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+</div>

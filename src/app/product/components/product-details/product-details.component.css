@@ -1,0 +1,15 @@
+.mat-column-variantName,
+.mat-column-variantValueValue,
+.mat-column-price,
+.mat-column-sku,
+.mat-column-barcode,
+.mat-column-active
+{
+    display: flex;
+    justify-content: center;
+}
+
+.badge {
+    margin: 1px;
+    font-weight: normal;
+}
